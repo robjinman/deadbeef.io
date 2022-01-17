@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deadbeefio-migrate-deployment
+  labels:
+    app: deadbeefio-migrate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deadbeefio-migrate
+  template:
+    metadata:
+      labels:
+        app: deadbeefio-migrate
+    spec:
+      containers:
+      - name: api
+        image: deadbeefio_migrate
+        env:
+        - name: DB_ADDR
+          valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: host } }
+        - name: DB_PORT
+          valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: port } }
+        - name: DB_NAME
+          valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: dbname } }
+        - name: DB_USER
+          valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: user } }
+        - name: DB_PASSWORD
+          valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: password } }
+        - name: MIGRATION_NAME
+          value: init
+        imagePullPolicy: Never

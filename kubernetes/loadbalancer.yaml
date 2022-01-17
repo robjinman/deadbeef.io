@@ -12,6 +12,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend-service
+            name: deadbeefio-api-service
             port:
-              number: 8080
+              number: 4000
