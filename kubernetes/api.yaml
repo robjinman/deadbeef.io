@@ -18,8 +18,6 @@ spec:
       - name: api
         image: deadbeefio_api
         env:
-        - name: DB_VENDOR
-          value: "postgres"
         - name: DB_ADDR
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: host } }
         - name: DB_PORT
@@ -30,8 +28,6 @@ spec:
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: user } }
         - name: DB_PASSWORD
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: password } }
-        - name: GET_HOSTS_FROM
-          value: dns
         imagePullPolicy: Never
         ports:
         - containerPort: 4000

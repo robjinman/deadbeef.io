@@ -8,10 +8,19 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /api
         pathType: Prefix
         backend:
           service:
             name: deadbeefio-api-service
             port:
               number: 4000
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: deadbeefio-frontend-service
+            port:
+              number: 80

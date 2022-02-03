@@ -1,6 +1,15 @@
 deadbeef.io
 ===========
 
+The application consists of three layers:
+
+* The database
+* The API
+* The front-end
+
+In production, the app is deployed to a Kubernetes cluster. During development, a local cluster is
+required, which is referred to as the staging environment.
+
 Installing Kubernetes
 ---------------------
 
@@ -12,7 +21,7 @@ To install Kubernetes, e.g. on Ubuntu 20, run
     sudo chown -f -R $USER ~/.kube
 ```
 
-Add the following to ~/.bashrc
+Optionally, add the following to ~/.bashrc to avoid having to type microk8s all the time
 
 ```
     alias kubectl="microk8s kubectl"
@@ -38,46 +47,37 @@ Install psql
     sudo apt install postgresql-client-common postgresql-client-12
 ```
 
-Building the app
-----------------
+Development workflow
+--------------------
 
-Build the api docker image
+### API
 
-```
-    ./scripts/dev/build_api.sh
-```
-
-Running the app
----------------
-
-### Development
-
-Deploy the application locally as a kubernetes cluster.
+Running the API
 
 ```
-    ./scripts/dev/deploy_local.sh
-```
+    ./scripts/dev/deploy_local_staging_db_only.sh
 
-Redeploy the api layer after rebuilding.
-
-```
-    ./scripts/dev/redeploy_api.sh
-```
-
-Enable access to the database for prisma commands. This call is blocking, so should be run in a separate terminal.
-
-```
+    # In a separate terminal
     ./scripts/dev/forward_db_port.sh
-```
 
-Set up the local db for the first time or restore it to its initial state.
-
-```
     ./scripts/dev/reset_db.sh
+    ./scripts/dev/run_api.sh
 ```
 
-Update the db after changing the prisma schema. This generates a new prisma client, so the api will need to be rebuilt after this.
+The API will now be available at http://localhost:4000.
+
+After changes to the DB schema
 
 ```
     ./scripts/dev/migrate_db.sh
 ```
+
+### Front-end
+
+With the API already running (see above), run the front-end
+
+```
+    scripts/dev/run_app.sh
+```
+
+The front-end will now be available at http://localhost:4200.

@@ -8,14 +8,7 @@ CMD ["apachectl", "-D", "FOREGROUND"]
 
 RUN apt update && \
     apt install -y apache2 \ 
-        php \
-        libapache2-mod-php \
-        php-pear \
         curl && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pear channel-discover pear.nrk.io
-RUN pear install nrk/Predis
-
-COPY app/ /var/www/html/
-
+COPY dist/deadbeefio/ /var/www/html/

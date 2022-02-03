@@ -3,7 +3,7 @@ import {APOLLO_OPTIONS} from 'apollo-angular';
 import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
 import {HttpLink} from 'apollo-angular/http';
 
-const uri = 'http://localhost'; // TODO: Depends on environment
+const uri = 'http://localhost:4000'; // TODO: Depends on environment
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
     link: httpLink.create({uri}),
