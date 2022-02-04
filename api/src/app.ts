@@ -5,7 +5,24 @@ import * as query from "./query";
 import * as User from "./user";
 import * as Post from "./post";
 
-const prisma = new PrismaClient();
+const dbUser = process.env["DB_USER"];
+const dbPasswordRaw = process.env["DB_PASSWORD_RAW"];
+const dbAddr = process.env["DB_ADDR"];
+const dbPort = process.env["DB_PORT"];
+const dbName = process.env["DB_NAME"];
+
+let dbPassword = process.env["DB_PASSWORD"];
+if (!dbPassword) {
+  dbPassword = encodeURIComponent(dbPasswordRaw || "");
+}
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: `postgresql://${dbUser}:${dbPassword}@${dbAddr}:${dbPort}/${dbName}?schema=public`
+    }
+  }
+});
 
 const resolvers = {
   Query: {

@@ -81,3 +81,31 @@ With the API already running (see above), run the front-end
 ```
 
 The front-end will now be available at http://localhost:4200.
+
+
+Deploying to staging
+--------------------
+
+First, the apps need to be compiled into docker images.
+
+```
+    ./scripts/dev/build_api.sh
+    ./scripts/dev/build_app.sh
+```
+
+Now we can deploy the local cluster
+
+```
+    ./scripts/dev/deploy_local_staging.sh
+```
+
+Set up the database
+
+```
+    # In a separate terminal
+    ./scripts/dev/forward_db_port.sh
+
+    ./scripts/dev/reset_db.sh 
+```
+
+The app should now be available at http://localhost.

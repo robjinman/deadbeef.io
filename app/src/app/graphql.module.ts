@@ -2,11 +2,26 @@ import {NgModule} from '@angular/core';
 import {APOLLO_OPTIONS} from 'apollo-angular';
 import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
 import {HttpLink} from 'apollo-angular/http';
+import { environment } from 'src/environments/environment';
 
-const uri = 'http://localhost:4000'; // TODO: Depends on environment
+const buildType = environment.buildType;
+
+function apiUrl(): string {
+  if (buildType == "development") {
+    return "http://localhost:4000";
+  }
+  else if (buildType == "staging") {
+    return "http://localhost/api"
+  }
+  else if (buildType == "production") {
+    return "https://deadbeef.io/api";
+  }
+  return "http://localhost:4000";
+}
+
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
-    link: httpLink.create({uri}),
+    link: httpLink.create({ uri: apiUrl() }),
     cache: new InMemoryCache(),
   };
 }

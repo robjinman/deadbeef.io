@@ -26,7 +26,7 @@ spec:
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: dbname } }
         - name: DB_USER
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: user } }
-        - name: DB_PASSWORD
+        - name: DB_PASSWORD_RAW
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: password } }
         imagePullPolicy: Never
         ports:

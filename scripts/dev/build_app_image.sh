@@ -1,7 +1,12 @@
 #!/bin/bash
 
-docker build -t deadbeefio_app ./app
+export BUILD_TYPE=${1:-staging}
+IMAGE_NAME=deadbeefio_app_${BUILD_TYPE}
 
-docker save deadbeefio_app > deadbeefio_app.tar
-microk8s ctr image import deadbeefio_app.tar
-rm ./deadbeefio_app.tar
+echo "Building ${IMAGE_NAME}..."
+
+docker build --build-arg BUILD_TYPE=${BUILD_TYPE} -t ${IMAGE_NAME} ./app
+
+docker save ${IMAGE_NAME} > ${IMAGE_NAME}.tar
+microk8s ctr image import ${IMAGE_NAME}.tar
+rm ./${IMAGE_NAME}.tar

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: deadbeefio-app
-        image: deadbeefio_app
+        image: deadbeefio_app_${BUILD_TYPE}
         imagePullPolicy: Never
         env:
         - name: GET_HOSTS_FROM
