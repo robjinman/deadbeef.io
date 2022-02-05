@@ -160,16 +160,16 @@ Setting up the production server
     capabilities = ["pull", "resolve"]
     EOF
 
+    sudo bash -c 'cat > /etc/docker/daemon.json' << EOF
+    {
+      "insecure-registries" : ["rloop2:5000"]
+    }
+    EOF
+
     microk8s stop
     microk8s start
 
     git clone https://github.com/CrunchyData/postgres-operator-examples.git
     cd postgres-operator-examples
     kubectl apply -k kustomize/install
-
-    sudo bash -c 'cat > /etc/docker/daemon.json' << EOF
-    {
-      "insecure-registries" : ["rloop2:5000"]
-    }
-    EOF
 ```

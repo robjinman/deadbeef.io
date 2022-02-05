@@ -1,5 +1,5 @@
 FROM node:16-alpine
-WORKDIR /usr
+WORKDIR /home/node
 ARG BUILD_TYPE
 COPY package.json ./
 COPY package-lock.json ./
@@ -20,4 +20,6 @@ RUN apt update && \
     apt install -y apache2 \ 
         curl && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=0 /usr/dist/deadbeefio/ .
+RUN a2enmod rewrite
+COPY 000-default.conf /etc/apache2/sites-enabled/
+COPY --from=0 /home/node/dist/deadbeefio/ .
