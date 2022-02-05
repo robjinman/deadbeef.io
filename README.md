@@ -70,7 +70,7 @@ Development workflow
 Running the API
 
 ```
-    ./scripts/dev/deploy_local_staging_db_only.sh
+    ./scripts/dev/deploy_staging_db_only.sh
 
     # In a separate terminal
     ./scripts/dev/forward_db_port.sh
@@ -111,7 +111,7 @@ First, the apps need to be compiled into docker images.
 Now we can deploy the local cluster
 
 ```
-    ./scripts/dev/deploy_local_staging.sh
+    ./scripts/dev/deploy_staging.sh
 ```
 
 Set up the database
