@@ -1,8 +1,9 @@
 FROM node:16-alpine
-WORKDIR /usr
+WORKDIR /home/node
 COPY package.json ./
 COPY package-lock.json ./
-COPY .env ./
+COPY tsconfig.json ./
 COPY prisma ./prisma
+COPY .env ./
 RUN npm install
-CMD ["npx", "prisma", "migrate", "deploy"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]

@@ -33,6 +33,21 @@ Enable the required add-ons
     microk8s enable dns ingress storage
 ```
 
+Make microk8s aware of our private docker registry
+
+```
+    sudo mkdir -p /var/snap/microk8s/current/args/certs.d/rloop2:5000
+    sudo bash -c 'cat > /var/snap/microk8s/current/args/certs.d/rloop2:5000/hosts.toml' << EOF
+    server = "http://rloop2:5000"
+
+    [host."rloop2:5000"]
+    capabilities = ["pull", "resolve"]
+    EOF
+
+    microk8s stop
+    microk8s start
+```
+
 Install the postgres operator
 
 ```
@@ -109,3 +124,52 @@ Set up the database
 ```
 
 The app should now be available at http://localhost.
+
+
+Deploying to production
+-----------------------
+
+```
+    ./scripts/prod/deploy_remote.sh
+```
+
+To set up or migrate the database
+
+```
+    ./scripts/prod/build_dbadmin_image.sh
+
+    ./scripts/prod/modify_db.sh
+```
+
+
+Setting up the production server
+--------------------------------
+
+```
+    sudo snap install microk8s --classic
+    sudo usermod -a -G microk8s $USER
+    sudo chown -f -R $USER ~/.kube
+
+    microk8s enable dns ingress storage
+
+    sudo mkdir -p /var/snap/microk8s/current/args/certs.d/rloop2:5000
+    sudo bash -c 'cat > /var/snap/microk8s/current/args/certs.d/rloop2:5000/hosts.toml' << EOF
+    server = "http://rloop2:5000"
+
+    [host."rloop2:5000"]
+    capabilities = ["pull", "resolve"]
+    EOF
+
+    microk8s stop
+    microk8s start
+
+    git clone https://github.com/CrunchyData/postgres-operator-examples.git
+    cd postgres-operator-examples
+    kubectl apply -k kustomize/install
+
+    sudo bash -c 'cat > /etc/docker/daemon.json' << EOF
+    {
+      "insecure-registries" : ["rloop2:5000"]
+    }
+    EOF
+```

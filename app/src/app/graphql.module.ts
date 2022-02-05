@@ -14,7 +14,7 @@ function apiUrl(): string {
     return "http://localhost/api"
   }
   else if (buildType == "production") {
-    return "https://deadbeef.io/api";
+    return "http://deadbeef.io/api"; // TODO: https
   }
   return "http://localhost:4000";
 }

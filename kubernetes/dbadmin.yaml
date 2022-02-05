@@ -1,22 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deadbeefio-migrate-deployment
+  name: deadbeefio-dbadmin-deployment
   labels:
-    app: deadbeefio-migrate
+    app: deadbeefio-dbadmin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: deadbeefio-migrate
+      app: deadbeefio-dbadmin
   template:
     metadata:
       labels:
-        app: deadbeefio-migrate
+        app: deadbeefio-dbadmin
     spec:
       containers:
-      - name: api
-        image: deadbeefio_migrate
+      - name: deadbeef-dbadmin
+        image: rloop2:5000/deadbeefio/deadbeefio_dbadmin
+        tty: true
+        stdin: true
         env:
         - name: DB_ADDR
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: host } }
@@ -26,8 +28,5 @@ spec:
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: dbname } }
         - name: DB_USER
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: user } }
-        - name: DB_PASSWORD
+        - name: DB_PASSWORD_RAW
           valueFrom: { secretKeyRef: { name: hippo-pguser-hippo, key: password } }
-        - name: MIGRATION_NAME
-          value: init
-        imagePullPolicy: Never
