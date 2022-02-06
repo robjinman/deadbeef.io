@@ -1,1 +1,15 @@
-<p>news-item works!</p>
+<div class="news-item-component" [routerLink]="['/i', item.id]">
+  <img src="{{ item.figure }}" alt="{{ item.title }}">
+  <div class="item-body">
+    <div class="tags-list">
+      <div class="tag" *ngFor="let tag of item.tags">{{ tag.name }}</div>
+    </div>
+    <h1 class="item-title">{{ item.title }}</h1>
+    <div class="item-info">
+      <span class="item-date">{{ item.publishedAt | date }}</span>
+      <span class="item-author">{{ item.author }}</span>
+    </div>
+    <div class="item-summary" [innerHTML]="item.summary"></div>
+    <button class="read-more" mat-flat-button color="primary">Read more</button>
+  </div>
+</div>

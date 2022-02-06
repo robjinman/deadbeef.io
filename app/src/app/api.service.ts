@@ -26,7 +26,7 @@ export class GetUsersGql extends Query<GetUsersResponse> {
 @Injectable({
   providedIn: 'root'
 })
-export class ArticleService {
+export class ApiService {
   constructor(private _getUsersGql: GetUsersGql) { }
 
   getUsers(): Observable<User[]>{

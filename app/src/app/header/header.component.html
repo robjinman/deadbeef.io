@@ -1,13 +1,17 @@
-<mat-toolbar class="header-component">
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>deadbeef</span>
-  <span class="header-spacer"></span>
-  <button mat-icon-button class="favorite-icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon>share</mat-icon>
-  </button>
-</mat-toolbar>
+<div class="header-component">
+  <mat-toolbar class="floating-header">
+    <img class="deadbeef-icon" src="assets/icon.svg" alt="deadbeef.io">
+    <span>deadbeef</span>
+    <nav>
+      <a mat-button routerLink="/">Home</a>
+      <a mat-button routerLink="/feed">Blog</a>
+    </nav>
+    <button mat-icon-button class="favorite-icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="fixed-header"></div>
+</div>

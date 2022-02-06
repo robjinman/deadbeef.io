@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ArticleService } from '../article.service';
+import { ApiService } from '../api.service';
 import { User } from '../types';
 
 @Component({
@@ -11,10 +11,10 @@ import { User } from '../types';
 export class FeedComponent implements OnInit {
   users!: Observable<User[]>;
 
-  constructor(private _articleService: ArticleService) { }
+  constructor(private _apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.users = this._articleService.getUsers();
+    this.users = this._apiService.getUsers();
   }
 
 }
