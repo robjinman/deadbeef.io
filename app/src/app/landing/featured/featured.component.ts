@@ -10,7 +10,7 @@ export interface Tile {
 @Component({
   selector: 'app-featured',
   templateUrl: './featured.component.html',
-  styleUrls: ['./featured.component.less']
+  styleUrls: ['./featured.component.sass']
 })
 export class FeaturedComponent implements OnInit {
 

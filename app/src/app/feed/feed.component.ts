@@ -6,7 +6,7 @@ import { User } from '../types';
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
-  styleUrls: ['./feed.component.less']
+  styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
   users!: Observable<User[]>;
