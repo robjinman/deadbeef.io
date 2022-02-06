@@ -62,6 +62,12 @@ Install psql
     sudo apt install postgresql-client-common postgresql-client-12
 ```
 
+Install cert-manager
+
+```
+    microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml
+```
+
 Development workflow
 --------------------
 
@@ -172,4 +178,6 @@ Setting up the production server
     git clone https://github.com/CrunchyData/postgres-operator-examples.git
     cd postgres-operator-examples
     kubectl apply -k kustomize/install
+
+    microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml
 ```
