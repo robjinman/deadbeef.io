@@ -3,12 +3,12 @@ WORKDIR /home/node
 ARG BUILD_TYPE
 COPY package.json ./
 COPY package-lock.json ./
+RUN npm install
 COPY tsconfig.json ./
 COPY tsconfig.app.json ./
 COPY angular.json ./
 COPY .browserslistrc ./
 COPY src ./src
-RUN npm install
 RUN npm run build-${BUILD_TYPE:-staging}
 
 FROM ubuntu:20.04
