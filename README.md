@@ -21,12 +21,6 @@ To install Kubernetes, e.g. on Ubuntu 20, run
     sudo chown -f -R $USER ~/.kube
 ```
 
-Optionally, add the following to ~/.bashrc to avoid having to type microk8s all the time
-
-```
-    alias kubectl="microk8s kubectl"
-```
-
 Enable the required add-ons
 
 ```
@@ -56,7 +50,7 @@ Install the postgres operator
     kubectl apply -k kustomize/install
 ```
 
-Install psql
+Might be useful to install psql
 
 ```
     sudo apt install postgresql-client-common postgresql-client-12
@@ -110,8 +104,8 @@ Deploying to staging
 First, the apps need to be compiled into docker images.
 
 ```
-    ./scripts/dev/build_api.sh
-    ./scripts/dev/build_app.sh
+    ./scripts/build_api_image.sh
+    ./scripts/build_app_image.sh staging
 ```
 
 Now we can deploy the local cluster
@@ -131,12 +125,25 @@ Set up the database
 
 The app should now be available at http://localhost.
 
+To redeploy the API and the app
+
+```
+    ./scripts/dev/redeploy_api.sh
+    ./scripts/dev/redeploy_app.sh
+```
+
 
 Deploying to production
 -----------------------
 
+Build the production version of the front-end app
+
 ```
-    ./scripts/prod/deploy_remote.sh
+    ./scripts/build_app_image.sh production
+```
+
+```
+    ./scripts/prod/first_deploy.sh
 ```
 
 To set up or migrate the database
@@ -144,6 +151,18 @@ To set up or migrate the database
 ```
     ./scripts/prod/build_dbadmin_image.sh
 
+    ./scripts/prod/modify_db.sh
+```
+
+On subsequent deployments of just the API and front-end app, run
+
+```
+    ./scripts/prod/redeploy.sh
+```
+
+And to migrate the database after schema changes
+
+```
     ./scripts/prod/modify_db.sh
 ```
 
