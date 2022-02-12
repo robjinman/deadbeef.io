@@ -8,3 +8,6 @@ export DB_NAME=$(microk8s kubectl get secrets "${PG_CLUSTER_USER_SECRET_NAME}" -
 export DB_USER=$(microk8s kubectl get secrets "${PG_CLUSTER_USER_SECRET_NAME}" -o go-template='{{.data.user | base64decode}}')
 DB_PASSWORD_RAW=$(microk8s kubectl get secrets "${PG_CLUSTER_USER_SECRET_NAME}" -o go-template='{{.data.password | base64decode}}')
 export DB_PASSWORD=$(node -p "encodeURIComponent('${DB_PASSWORD_RAW}')")
+
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_ADDR}:${DB_PORT}/${DB_NAME}?schema=public"
+echo "DATABASE_URL=${DATABASE_URL}"

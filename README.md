@@ -75,13 +75,24 @@ Running the API
     # In a separate terminal
     ./scripts/dev/forward_db_port.sh
 
-    ./scripts/dev/reset_db.sh
+    # Set up the database
+    source ./scripts/dev/private/db_credentials.sh
+    (cd api && npx prisma db push && npx prisma db seed)
+
     ./scripts/dev/run_api.sh
 ```
 
 The API will now be available at http://localhost:4000.
 
-After changes to the DB schema
+After schema changes during development
+
+```
+    cd api
+    npx prisma db push
+```
+
+If the schema has changed relative to production and we're ready to create a migration that
+can be committed to the repo and applied to the production database.
 
 ```
     ./scripts/dev/migrate_db.sh
