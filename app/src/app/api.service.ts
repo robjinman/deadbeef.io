@@ -2,22 +2,19 @@ import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from './types'
-
-interface GetUsersResponse {
-  users: User[];
-}
+import { getArticles, getArticles_publishedArticles } from './__generated__/getArticles';
 
 @Injectable({
   providedIn: "root"
 })
-export class GetUsersGql extends Query<GetUsersResponse> {
+export class GetArticlesGql extends Query<getArticles> {
   override document = gql`
-    query getUsers {
-      users {
+    query getArticles {
+      publishedArticles {
         id
-        name
-        email
+        title
+        content
+        publishedAt
       }
     }
   `;
@@ -27,13 +24,13 @@ export class GetUsersGql extends Query<GetUsersResponse> {
   providedIn: 'root'
 })
 export class ApiService {
-  constructor(private _getUsersGql: GetUsersGql) { }
+  constructor(private _getArticles: GetArticlesGql) { }
 
-  getUsers(): Observable<User[]>{
-    return this._getUsersGql
+  getArticles(): Observable<getArticles_publishedArticles[]>{
+    return this._getArticles
       .watch()
       .valueChanges.pipe(
-        map(result => result.data.users)
+        map(result => result.data.publishedArticles)
       );
   }
 }

@@ -108,6 +108,13 @@ With the API already running (see above), run the front-end
 
 The front-end will now be available at http://localhost:4200.
 
+To keep the generated graphQL types up to date
+
+```
+    cd app
+    npx apollo codegen:generate --endpoint=http://localhost:4000 --target=typescript --tagName=gql
+```
+
 
 Deploying to staging
 --------------------

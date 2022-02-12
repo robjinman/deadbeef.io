@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NewsItem } from 'src/app/types';
 
 @Component({
   selector: 'app-news-item',
@@ -8,7 +7,7 @@ import { NewsItem } from 'src/app/types';
 })
 export class NewsItemComponent implements OnInit {
 
-  @Input() item!: NewsItem;
+  @Input() item!: any; // TODO
 
   constructor() { }
 

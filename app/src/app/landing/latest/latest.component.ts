@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NewsItem } from 'src/app/types';
 
 @Component({
   selector: 'app-latest',
@@ -7,7 +6,7 @@ import { NewsItem } from 'src/app/types';
   styleUrls: ['./latest.component.sass']
 })
 export class LatestComponent implements OnInit {
-  items: NewsItem[] = [{
+  items = [{
     id: "123",
     title: "Etiam non nunc ut leo varius accumsan at sed leo. Pellentesque congue viverra ex eu facilisis.",
     publishedAt: (new Date()).toLocaleDateString(),
