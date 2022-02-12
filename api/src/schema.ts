@@ -9,14 +9,14 @@ interface Document {
 
 type Query {
   info: String!
-  publishedArticles(tags: [ID!], skip: Int, first: Int, filter: String): [Article!]!
-  allArticles(skip: Int, first: Int): [Article!]!
+  publishedArticles(tags: [ID!], skip: Int, take: Int, filter: String): [Article!]!
+  allArticles(skip: Int, take: Int): [Article!]!
   article(id: ID!): Article
   page(name: String!): Page
   pages: [Page!]!
   files(documentId: ID!): [File!]!
-  comments(skip: Int, first: Int): [Comment!]!
-  users(skip: Int, first: Int): [User!]!
+  comments(skip: Int, take: Int): [Comment!]!
+  users(skip: Int, take: Int): [User!]!
   user(name: String!): User
   allTags: [Tag!]!
   usedTags: [Tag!]!

@@ -18,7 +18,7 @@ model Article {
   draft Boolean
   createdAt DateTime @default(now())
   modifiedAt DateTime @updatedAt
-  publishedAt DateTime
+  publishedAt DateTime?
   title String
   summary String
   content String

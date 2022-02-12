@@ -2,8 +2,9 @@ import { ApolloServer } from 'apollo-server';
 import { PrismaClient } from '@prisma/client';
 import { schema } from './schema';
 import * as query from "./resolvers/query";
-import * as Page from "./resolvers/page";
-import * as User from "./resolvers/user";
+import * as mutation from "./resolvers/mutation";
+import * as page from "./resolvers/page";
+import * as user from "./resolvers/user";
 import { ExpressContext } from 'apollo-server-express';
 import { Context } from './context';
 import { makeConfig } from './config';
@@ -35,8 +36,9 @@ const resolvers = {
     ...query
   },
 
-  User,
-  Page
+  Mutation: mutation,
+  User: user,
+  Page: page
 };
 
 function makeContext(request: ExpressContext): Context {

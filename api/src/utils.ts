@@ -31,7 +31,11 @@ export async function assertAdminUser(context: Context) {
     select: { role: true }
   });
 
-  if (user == null || user.role != Role.ADMIN) {
+  if (user == null || user.role !== Role.ADMIN) {
     throw new Error("Not authorized");
   }
+}
+
+export function lowerCase(s?: string|null) {
+  return s ? s.toLowerCase() : null;
 }
