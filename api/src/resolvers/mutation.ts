@@ -7,21 +7,13 @@ import { dispatchActivationEmail } from "../account_activation";
 import { dispatchEmail } from "../mail";
 import { Prisma, Role } from "@prisma/client";
 
-export async function signup(parent: any, args: any, context: Context) {
+export async function signup(parent: undefined, args: any, context: Context) {
   await verifyCaptcha(args.captcha);
 
   const email = lowerCase(args.email) || "";
 
   const exists = await context.prisma.user.count({
-    where: {
-      OR: [
-        {
-          name: args.name
-        }, {
-          email
-        }
-      ]
-    }
+    where: { OR: [ { name: args.name }, { email } ] }
   }) > 0;
 
   if (exists) {
@@ -48,7 +40,7 @@ export async function signup(parent: any, args: any, context: Context) {
   };
 }
 
-export async function login(parent: any, args: any, context: Context) {
+export async function login(parent: undefined, args: any, context: Context) {
   const email = lowerCase(args.email) || "";
   const user = await context.prisma.user.findUnique({
     where: { email },
@@ -72,7 +64,7 @@ export async function login(parent: any, args: any, context: Context) {
   };
 }
 
-export async function adminLogin(parent: any, args: any, context: Context) {
+export async function adminLogin(parent: undefined, args: any, context: Context) {
   await verifyCaptcha(args.captcha);
 
   const email = lowerCase(args.email) || "";
@@ -106,8 +98,12 @@ export async function adminLogin(parent: any, args: any, context: Context) {
   };
 }
 
-export async function sendActivationEmail(parent: any, args: any, context: Context) {
+export async function sendActivationEmail(parent: undefined, args: any, context: Context) {
   const userId = getUserId(context);
+
+  if (userId === null) {
+    throw new Error("No such user");
+  }
 
   const user = await context.prisma.user.findUnique({
     where: { id: userId },
@@ -136,7 +132,7 @@ export async function sendActivationEmail(parent: any, args: any, context: Conte
   return true;
 }
 
-export async function activateAccount(parent: any, args: any, context: Context) {
+export async function activateAccount(parent: undefined, args: any, context: Context) {
   await context.prisma.user.update({
     data: {
       activationCode: null
@@ -150,7 +146,7 @@ export async function activateAccount(parent: any, args: any, context: Context) 
   return true;
 }
 
-export async function postArticle(parent: any, args: any, context: Context) {
+export async function postArticle(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   const timestamp = currentDateString();
@@ -167,7 +163,7 @@ export async function postArticle(parent: any, args: any, context: Context) {
   });
 }
 
-export async function updateArticle(parent: any, args: any, context: Context) {
+export async function updateArticle(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   const currentTags = await context.prisma.article.findUnique({ where: { id: args.id } }).tags();
@@ -192,7 +188,7 @@ export async function updateArticle(parent: any, args: any, context: Context) {
   });
 }
 
-export async function publishArticle(parent: any, args: any, context: Context) {
+export async function publishArticle(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   const timestamp = currentDateString();
@@ -214,12 +210,12 @@ export async function publishArticle(parent: any, args: any, context: Context) {
   });
 }
 
-export async function deleteArticle(parent: any, args: any, context: Context) {
+export async function deleteArticle(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
   return await context.prisma.article.delete({ where: { id: args.id } });
 }
 
-export async function postPage(parent: any, args: any, context: Context) {
+export async function postPage(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.page.create({
@@ -230,7 +226,7 @@ export async function postPage(parent: any, args: any, context: Context) {
   });
 }
 
-export async function postTag(parent: any, args: any, context: Context) {
+export async function postTag(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.tag.create({
@@ -240,7 +236,7 @@ export async function postTag(parent: any, args: any, context: Context) {
   });
 }
 
-export async function updatePage(parent: any, args: any, context: Context) {
+export async function updatePage(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.page.update({
@@ -253,16 +249,20 @@ export async function updatePage(parent: any, args: any, context: Context) {
   });
 }
 
-export async function deletePage(parent: any, args: any, context: Context) {
+export async function deletePage(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.page.delete({ where: { name: args.name } });
 }
 
-export async function postComment(parent: any, args: any, context: Context) {
+export async function postComment(parent: undefined, args: any, context: Context) {
   await verifyCaptcha(args.captcha);
 
   const userId = getUserId(context);
+
+  if (userId === null) {
+    throw new Error("Not authorised");
+  }
 
   return await context.prisma.comment.create({
     data: {
@@ -273,8 +273,12 @@ export async function postComment(parent: any, args: any, context: Context) {
   });
 }
 
-export async function deleteComment(parent: any, args: any, context: Context) {
+export async function deleteComment(parent: undefined, args: any, context: Context) {
   const userId = getUserId(context);
+
+  if (userId === null) {
+    throw new Error("Not authorised");
+  }
 
   const user = await context.prisma.user.findUnique({
     where: { id: userId },
@@ -296,15 +300,20 @@ export async function deleteComment(parent: any, args: any, context: Context) {
   });
 
   if (comment) {
-    if (!user || (user.role !== Role.ADMIN && userId != comment.user.id)) {
+    if (!user) {
       throw new Error("Not authorized");
+    }
+    if (user.role !== Role.ADMIN) {
+      if (!comment.user || userId != comment.user.id) {
+        throw new Error("Not authorized");
+      }
     }
 
     return await context.prisma.comment.delete({ where: { id: args.id } });
   }
 }
 
-export async function uploadFile(parent: any, args: any, context: Context) {
+export async function uploadFile(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   let file = null;
@@ -339,15 +348,15 @@ export async function uploadFile(parent: any, args: any, context: Context) {
   return file;
 }
 
-export async function deleteFile(parent: any, args: any, context: Context) {
+export async function deleteFile(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
   return await context.prisma.file.delete({ where: { id: args.id } });
 }
 
-export async function updateUser(parent: any, args: any, context: Context) {
+export async function updateUser(parent: undefined, args: any, context: Context) {
   const userId = getUserId(context);
 
-  if (userId !== args.id) {
+  if (userId === null || userId !== args.id) {
     throw new Error("Not authorized");
   }
 
@@ -380,7 +389,7 @@ export async function updateUser(parent: any, args: any, context: Context) {
   });
 }
 
-export async function deleteUser(parent: any, args: any, context: Context) {
+export async function deleteUser(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   const user = await context.prisma.user.findUnique({
@@ -405,7 +414,7 @@ export async function deleteUser(parent: any, args: any, context: Context) {
   return await context.prisma.user.delete({ where: { id: args.id } });
 }
 
-export async function sendEmail(parent: any, args: any, context: Context) {
+export async function sendEmail(parent: undefined, args: any, context: Context) {
   await verifyCaptcha(args.captcha);
 
   const appEmail = context.config.emailAddress;

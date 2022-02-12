@@ -2,19 +2,19 @@ import { Prisma, Role } from "@prisma/client";
 import { Context } from "../context";
 import { assertAdminUser, getUserId } from "../utils";
 
-export async function page(parent: any, args: any, context: Context) {
+export async function page(parent: undefined, args: any, context: Context) {
   return await context.prisma.page.findUnique({
     where: {
-      id: parent.id
+      id: args.id
     }
   });
 }
 
-export async function pages(parent: any, args: any, context: Context) {
+export async function pages(parent: undefined, args: any, context: Context) {
   return await context.prisma.page.findMany();
 }
 
-export async function publishedArticles(parent: any, args: any, context: Context) {
+export async function publishedArticles(parent: undefined, args: any, context: Context) {
   const where: Prisma.ArticleWhereInput = {
     draft: false
   };
@@ -37,7 +37,7 @@ export async function publishedArticles(parent: any, args: any, context: Context
   });
 }
 
-export async function allArticles(parent: any, args: any, context: Context) {
+export async function allArticles(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.article.findMany({
@@ -49,7 +49,7 @@ export async function allArticles(parent: any, args: any, context: Context) {
   });
 }
 
-export async function article(parent: any, args: any, context: Context) {
+export async function article(parent: undefined, args: any, context: Context) {
   const article = await context.prisma.article.findUnique({ where: { id: args.id } });
 
   if (article && article.draft) {
@@ -59,11 +59,11 @@ export async function article(parent: any, args: any, context: Context) {
   return article;
 }
 
-export async function tag(parent: any, args: any, context: Context) {
+export async function tag(parent: undefined, args: any, context: Context) {
   return await context.prisma.tag.findUnique({ where: { id: args.id } });
 }
 
-export async function usedTags(parent: any, args: any, context: Context) {
+export async function usedTags(parent: undefined, args: any, context: Context) {
   return await context.prisma.tag.findMany({
     where: {
       articles: {
@@ -75,11 +75,11 @@ export async function usedTags(parent: any, args: any, context: Context) {
   });
 }
 
-export async function allTags(parent: any, args: any, context: Context) {
+export async function allTags(parent: undefined, args: any, context: Context) {
   return await context.prisma.tag.findMany();
 }
 
-export async function comments(parent: any, args: any, context: Context) {
+export async function comments(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.comment.findMany({
@@ -91,7 +91,7 @@ export async function comments(parent: any, args: any, context: Context) {
   });
 }
 
-export async function files(parent: any, args: any, context: Context) {
+export async function files(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.file.findMany({
@@ -112,7 +112,7 @@ export async function files(parent: any, args: any, context: Context) {
   });
 }
 
-export async function users(parent: any, args: any, context: Context) {
+export async function users(parent: undefined, args: any, context: Context) {
   await assertAdminUser(context);
 
   return await context.prisma.user.findMany({
@@ -121,11 +121,18 @@ export async function users(parent: any, args: any, context: Context) {
   });
 }
 
-export async function user(parent: any, args: any, context: Context) {
+export async function user(parent: undefined, args: any, context: Context) {
   const userId = getUserId(context);
-  const user = await context.prisma.user.findUnique({ where: { id: userId } });
+  if (userId === null) {
+    throw new Error("Not authorised");
+  }
+  const loggedInUser = await context.prisma.user.findUnique({ where: { id: userId } });
 
-  if (user && user.role != Role.ADMIN && user.name != args.name) {
+  if (!loggedInUser) {
+    throw new Error("Not authorised");
+  }
+
+  if (loggedInUser.role != Role.ADMIN && loggedInUser.name != args.name) {
     throw new Error("Not authorized");
   }
 

@@ -2,17 +2,21 @@ import { Role } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { Context } from './context';
 
+export interface AuthPayload {
+  userId: number;
+}
+
 export function currentDateString() {
   return (new Date()).toISOString();
 }
 
-export function getUserId(context: Context) {
+export function getUserId(context: Context): number|null {
   const authorization = context.req.get('Authorization');
   if (authorization) {
     const token = authorization.replace('Bearer ', '');
 
     if (token) {
-      const { userId } = <any>jwt.verify(token, context.config.appSecret);
+      const { userId } = <AuthPayload>jwt.verify(token, context.config.appSecret);
       return userId;
     }
   }
