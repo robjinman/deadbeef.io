@@ -16,7 +16,6 @@ import { MaterialUiModule } from './material-ui/material-ui.module';
 import { TutorialsComponent } from './tutorials/tutorials.component';
 import { SoftwareComponent } from './software/software.component';
 import { AboutComponent } from './about/about.component';
-import { BlightedNixHoundComponent } from './blighted-nix-hound/blighted-nix-hound.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { BlightedNixHoundComponent } from './blighted-nix-hound/blighted-nix-hou
     TutorialsComponent,
     SoftwareComponent,
     AboutComponent,
-    BlightedNixHoundComponent
   ],
   imports: [
     BrowserModule,
