@@ -13,6 +13,10 @@ import { LandingComponent } from './landing/landing.component';
 import { LatestComponent } from './landing/latest/latest.component';
 import { NewsItemComponent } from './landing/latest/news-item/news-item.component';
 import { MaterialUiModule } from './material-ui/material-ui.module';
+import { TutorialsComponent } from './tutorials/tutorials.component';
+import { SoftwareComponent } from './software/software.component';
+import { AboutComponent } from './about/about.component';
+import { BlightedNixHoundComponent } from './blighted-nix-hound/blighted-nix-hound.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { MaterialUiModule } from './material-ui/material-ui.module';
     FeaturedComponent,
     LandingComponent,
     LatestComponent,
-    NewsItemComponent
+    NewsItemComponent,
+    TutorialsComponent,
+    SoftwareComponent,
+    AboutComponent,
+    BlightedNixHoundComponent
   ],
   imports: [
     BrowserModule,

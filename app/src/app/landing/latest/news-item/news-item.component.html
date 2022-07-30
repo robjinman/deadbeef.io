@@ -6,7 +6,7 @@
     </div>
     <h1 class="item-title">{{ item.title }}</h1>
     <div class="item-info">
-      <span class="item-date">{{ item.publishedAt | date }}</span>
+      <span class="item-date">{{ item.publishedAt }}</span>
       <span class="item-author">{{ item.author }}</span>
     </div>
     <div class="item-summary" [innerHTML]="item.summary"></div>

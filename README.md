@@ -47,7 +47,7 @@ Install the postgres operator
 ```
     git clone https://github.com/CrunchyData/postgres-operator-examples.git
     cd postgres-operator-examples
-    kubectl apply -k kustomize/install
+    microk8s kubectl apply -k kustomize/install
 ```
 
 Might be useful to install psql
