@@ -48,8 +48,8 @@ export class GetArticlesGql extends Query<PublishedArticles> {
 })
 export class LoginGql extends Mutation<Login> {
   override document = gql`
-    mutation Login($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
+    mutation Login($email: String!, $password: String!, $captcha: String) {
+      login(email: $email, password: $password, captcha: $captcha) {
         token,
         user {
           name,
@@ -115,8 +115,8 @@ export class ApiService {
       );
   }
 
-  login(username: string, password: string): Observable<Login_login|null>{
-    return this._login.mutate({ username, password })
+  login(username: string, password: string, captcha?: string): Observable<Login_login|null>{
+    return this._login.mutate({ username, password, captcha })
       .pipe(
         map(result => result?.data?.login || null),
         tap((auth : Login_login|null) => {

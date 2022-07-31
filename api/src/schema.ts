@@ -27,8 +27,7 @@ type Mutation {
   signup(email: String!, password: String!, name: String!, captcha: String!): AuthPayload
   activateAccount(id: ID!, code: String!): Boolean
   sendActivationEmail: Boolean
-  login(email: String!, password: String!): AuthPayload
-  adminLogin(email: String!, password: String!, captcha: String!): AuthPayload
+  login(email: String!, password: String!, captcha: String): AuthPayload
   postArticle(title: String!, summary: String!, content: String!, tags: [ID!]!): Article!
   updateArticle(id: ID!, title: String!, summary: String!, content: String!, tags: [ID!]!): Article!
   publishArticle(id: ID!, publish: Boolean!): Article!

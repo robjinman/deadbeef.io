@@ -44,32 +44,6 @@ export async function login(parent: undefined, args: any, context: Context) {
   const email = lowerCase(args.email) || "";
   const user = await context.prisma.user.findUnique({
     where: { email },
-    select: { id: true, pwHash: true }
-  });
-
-  if (!user) {
-    throw new Error("No such user found");
-  }
-
-  const valid = await bcrypt.compare(args.password, user.pwHash);
-  if (!valid) {
-    throw new Error("Invalid password");
-  }
-
-  const token = jwt.sign({ userId: user.id }, context.config.appSecret);
-
-  return {
-    token,
-    user
-  };
-}
-
-export async function adminLogin(parent: undefined, args: any, context: Context) {
-  await verifyCaptcha(args.captcha);
-
-  const email = lowerCase(args.email) || "";
-  const user = await context.prisma.user.findUnique({
-    where: { email },
     select: {
       id: true,
       role: true,
@@ -81,8 +55,8 @@ export async function adminLogin(parent: undefined, args: any, context: Context)
     throw new Error("No such user found");
   }
 
-  if (user.role !== Role.ADMIN) {
-    throw new Error("Not authorised");
+  if (user.role == Role.ADMIN) {
+    //await verifyCaptcha(args.captcha);
   }
 
   const valid = await bcrypt.compare(args.password, user.pwHash);

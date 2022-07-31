@@ -19,6 +19,9 @@ import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { CaptchaComponent } from './captcha/captcha.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     SoftwareComponent,
     AboutComponent,
     LoginComponent,
+    AdminLoginComponent,
+    AdminDashboardComponent,
+    CaptchaComponent,
   ],
   imports: [
     BrowserModule,
