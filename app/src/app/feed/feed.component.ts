@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
-import { getArticles_publishedArticles } from '../__generated__/getArticles';
+import { PublishedArticles_publishedArticles } from '../__generated__/PublishedArticles';
 
 @Component({
   selector: 'app-feed',
@@ -9,7 +9,7 @@ import { getArticles_publishedArticles } from '../__generated__/getArticles';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
-  articles!: Observable<getArticles_publishedArticles[]>;
+  articles!: Observable<PublishedArticles_publishedArticles[]>;
 
   constructor(private _apiService: ApiService) { }
 

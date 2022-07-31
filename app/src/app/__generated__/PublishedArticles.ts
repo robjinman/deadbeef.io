@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: getArticles
+// GraphQL query operation: PublishedArticles
 // ====================================================
 
-export interface getArticles_publishedArticles {
+export interface PublishedArticles_publishedArticles {
   __typename: "Article";
   id: string;
   title: string;
@@ -15,6 +15,6 @@ export interface getArticles_publishedArticles {
   publishedAt: string | null;
 }
 
-export interface getArticles {
-  publishedArticles: getArticles_publishedArticles[];
+export interface PublishedArticles {
+  publishedArticles: PublishedArticles_publishedArticles[];
 }

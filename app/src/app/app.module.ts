@@ -16,6 +16,9 @@ import { MaterialUiModule } from './material-ui/material-ui.module';
 import { TutorialsComponent } from './tutorials/tutorials.component';
 import { SoftwareComponent } from './software/software.component';
 import { AboutComponent } from './about/about.component';
+import { LoginComponent } from './login/login.component';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { AboutComponent } from './about/about.component';
     TutorialsComponent,
     SoftwareComponent,
     AboutComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,9 +40,17 @@ import { AboutComponent } from './about/about.component';
     BrowserAnimationsModule,
     GraphQLModule,
     HttpClientModule,
-    MaterialUiModule
+    MaterialUiModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
+        duration: 2000,
+        panelClass: ['snackbar']
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

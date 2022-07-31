@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {APOLLO_OPTIONS} from 'apollo-angular';
-import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
+import {InMemoryCache} from '@apollo/client/core';
 import {HttpLink} from 'apollo-angular/http';
 import { environment } from 'src/environments/environment';
+import { AuthMiddleware, IdentityService } from './api.service';
 
 const buildType = environment.buildType;
 
@@ -19,19 +20,24 @@ function apiUrl(): string {
   return "http://localhost:4000";
 }
 
-export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-  return {
-    link: httpLink.create({ uri: apiUrl() }),
-    cache: new InMemoryCache(),
-  };
-}
-
 @NgModule({
   providers: [
+    { // TODO: Is this necessary?
+      provide: AuthMiddleware,
+      useFactory: (identityService: IdentityService) => {
+        return new AuthMiddleware(identityService);
+      },
+      deps: [IdentityService]
+    },
     {
       provide: APOLLO_OPTIONS,
-      useFactory: createApollo,
-      deps: [HttpLink],
+      useFactory: (httpLink: HttpLink, authMiddleware: AuthMiddleware) => {
+        return {
+          link: authMiddleware.concat(httpLink.create({ uri: apiUrl() })),
+          cache: new InMemoryCache(),
+        };
+      },
+      deps: [HttpLink, AuthMiddleware],
     },
   ],
 })
