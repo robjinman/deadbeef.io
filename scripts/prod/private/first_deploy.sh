@@ -18,5 +18,5 @@ microk8s kubectl delete postgresCluster hippo
 microk8s kubectl create -f ./kubernetes/postgres.yaml
 microk8s kubectl create -f ./kubernetes/api.yaml
 envsubst < ./kubernetes/app.yaml | microk8s kubectl apply -f -
-envsubst < ./kubernetes/ssl_cert_issuer.yaml | microk8s kubectl apply -f -
-microk8s kubectl create -f ./kubernetes/loadbalancer.yaml
+envsubst < ./kubernetes/prod/ssl_cert_issuer.yaml | microk8s kubectl apply -f -
+microk8s kubectl create -f ./kubernetes/prod/loadbalancer.yaml
