@@ -10,6 +10,18 @@ The application consists of three layers:
 In production, the app is deployed to a Kubernetes cluster. During development, a local cluster is
 required, which is referred to as the staging environment.
 
+
+Setting up a Docker registry
+----------------------------
+
+We need a docker registry to store images. I create this on a machine on the local network with
+hostname rloop2.
+
+```
+    docker run -d -p 5000:5000 --restart=always --name registry registry:2
+```
+
+
 Installing Kubernetes
 ---------------------
 
@@ -47,7 +59,8 @@ Install the postgres operator
 ```
     git clone https://github.com/CrunchyData/postgres-operator-examples.git
     cd postgres-operator-examples
-    microk8s kubectl apply -k kustomize/install
+    microk8s kubectl apply -k kustomize/install/namespace
+    microk8s kubectl apply --server-side -k kustomize/install/default
 ```
 
 Might be useful to install psql
@@ -61,6 +74,7 @@ Install cert-manager
 ```
     microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml
 ```
+
 
 Development workflow
 --------------------

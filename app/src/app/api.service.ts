@@ -115,8 +115,8 @@ export class ApiService {
       );
   }
 
-  login(username: string, password: string, captcha?: string): Observable<Login_login|null>{
-    return this._login.mutate({ username, password, captcha })
+  login(email: string, password: string, captcha?: string): Observable<Login_login|null>{
+    return this._login.mutate({ email, password, captcha })
       .pipe(
         map(result => result?.data?.login || null),
         tap((auth : Login_login|null) => {
